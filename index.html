@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A futuristic neon cyberpunk Tic-Tac-Toe game featuring cinematic landscape visuals, smooth animations, and interactive scoreboard.">
+  <title>Tic-Tac-Toe</title>
+  
+  <!-- Google Fonts: Orbitron & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Cinematic Neon Sunset & Mountain Landscape Background -->
+  <div class="scenic-background" aria-hidden="true">
+    <!-- Starfield layer -->
+    <div class="stars-layer"></div>
+    <div class="shooting-star"></div>
+    
+    <!-- Neon Sun / Horizon Glow -->
+    <div class="neon-sun"></div>
+    <div class="horizon-glow"></div>
+
+    <!-- Mountain Layers (SVG Silhouette with Atmospheric Backlight) -->
+    <svg class="mountains-svg" viewBox="0 0 1440 600" preserveAspectRatio="none">
+      <!-- Distant Peaks -->
+      <path class="mountain-back" d="M0,320 L120,240 L280,330 L450,190 L610,290 L790,160 L970,300 L1150,210 L1320,310 L1440,260 L1440,600 L0,600 Z"></path>
+      <!-- Mid-ground Ridge -->
+      <path class="mountain-mid" d="M0,380 L180,280 L350,370 L520,270 L720,380 L880,250 L1080,360 L1260,290 L1440,370 L1440,600 L0,600 Z"></path>
+      <!-- Foreground Sharp Silhouettes -->
+      <path class="mountain-front" d="M0,450 L140,360 L310,460 L500,350 L680,450 L860,340 L1020,440 L1220,350 L1380,430 L1440,400 L1440,600 L0,600 Z"></path>
+    </svg>
+
+    <!-- Lake with Sunset Light Reflection & Ripples -->
+    <div class="reflective-lake">
+      <div class="lake-reflection"></div>
+      <div class="lake-shimmer"></div>
+      <div class="lake-vignette"></div>
+    </div>
+  </div>
+
+  <!-- Main Game Container -->
+  <main class="app-container">
+    <!-- Header Section -->
+    <header class="game-header">
+      <h1 class="game-title">Tic-Tac-Toe</h1>
+      <p class="game-subtitle">Play • Win • Have Fun</p>
+    </header>
+
+    <!-- Glassmorphism Game Card -->
+    <section class="game-panel" aria-label="Game board and scoreboard">
+      <!-- Top Glowing Status Pill -->
+      <div class="status-container">
+        <div id="statusPill" class="status-pill turn-x" aria-live="polite" role="status">
+          <span class="status-indicator" aria-hidden="true"></span>
+          <span id="statusText" class="status-text">X's Turn</span>
+        </div>
+      </div>
+
+      <!-- Starting Player Option: First Turn Selection (X or O / Zero) -->
+      <div class="starter-container" aria-label="Starting player option">
+        <span class="starter-label">First Move:</span>
+        <div class="starter-toggle-group" role="radiogroup" aria-label="Select which player starts first">
+          <button type="button" id="btnStartX" class="starter-btn active-x" data-starter="X" role="radio" aria-checked="true" aria-label="X (Cross) plays first">
+            <span class="starter-symbol sym-x">✕</span>
+            <span>X First</span>
+          </button>
+          <button type="button" id="btnStartO" class="starter-btn" data-starter="O" role="radio" aria-checked="false" aria-label="O (Zero) plays first">
+            <span class="starter-symbol sym-o">○</span>
+            <span>O First</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3x3 Tic-Tac-Toe Board -->
+      <div id="gameBoard" class="board-grid" role="grid" aria-label="Tic-Tac-Toe 3 by 3 Grid">
+        <button class="cell" data-index="0" role="gridcell" aria-label="Cell 1, empty" tabindex="0"></button>
+        <button class="cell" data-index="1" role="gridcell" aria-label="Cell 2, empty" tabindex="0"></button>
+        <button class="cell" data-index="2" role="gridcell" aria-label="Cell 3, empty" tabindex="0"></button>
+        <button class="cell" data-index="3" role="gridcell" aria-label="Cell 4, empty" tabindex="0"></button>
+        <button class="cell" data-index="4" role="gridcell" aria-label="Cell 5, empty" tabindex="0"></button>
+        <button class="cell" data-index="5" role="gridcell" aria-label="Cell 6, empty" tabindex="0"></button>
+        <button class="cell" data-index="6" role="gridcell" aria-label="Cell 7, empty" tabindex="0"></button>
+        <button class="cell" data-index="7" role="gridcell" aria-label="Cell 8, empty" tabindex="0"></button>
+        <button class="cell" data-index="8" role="gridcell" aria-label="Cell 9, empty" tabindex="0"></button>
+      </div>
+
+      <!-- Scoreboard Cards -->
+      <div class="scoreboard-container" aria-label="Match score statistics">
+        <div class="score-card score-x">
+          <div class="score-label">X WINS</div>
+          <div id="scoreX" class="score-value" aria-label="Player X wins: 0">0</div>
+        </div>
+        <div class="score-card score-draw">
+          <div class="score-label">DRAWS</div>
+          <div id="scoreDraws" class="score-value" aria-label="Total draws: 0">0</div>
+        </div>
+        <div class="score-card score-o">
+          <div class="score-label">O WINS</div>
+          <div id="scoreO" class="score-value" aria-label="Player O wins: 0">0</div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button id="btnRestart" class="btn btn-restart" aria-label="Restart current game">
+          <span class="btn-icon" aria-hidden="true">↻</span>
+          <span class="btn-text">Restart Game</span>
+        </button>
+        <button id="btnNewMatch" class="btn btn-new-match" aria-label="Reset match and scoreboard">
+          <span class="btn-text">New Match</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Confirmation Modal for "New Match" -->
+  <div id="confirmModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <div class="modal-card">
+      <div class="modal-glow-border"></div>
+      <div class="modal-content">
+        <div class="modal-icon" aria-hidden="true">⚠️</div>
+        <h2 id="modalTitle" class="modal-title">Reset Scoreboard?</h2>
+        <p id="modalDesc" class="modal-desc">
+          Starting a <strong>New Match</strong> will clear the current board and reset all win/draw scores back to 0. Are you sure?
+        </p>
+        <div class="modal-actions">
+          <button id="modalBtnCancel" class="btn btn-secondary">Cancel</button>
+          <button id="modalBtnConfirm" class="btn btn-danger">Confirm Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script src="script.js"></script>
+</body>
+</html>
